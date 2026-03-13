@@ -10,8 +10,6 @@ A solução segue o modelo de pirâmide, distribuindo os testes em três níveis
 2.  **Testes de Integração (.NET):** Validação do fluxo entre Controllers, Services e Repositórios.
 3.  **Testes End-to-End (Playwright):** Validação do fluxo completo do usuário no navegador.
 
----
-
 ## 📂 Estrutura do Projeto
 
 ```text
