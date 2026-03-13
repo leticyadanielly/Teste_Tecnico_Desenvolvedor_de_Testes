@@ -1,197 +1,67 @@
-🧪 Test Strategy – MinhasFinanças API
+🧪 Test Strategy – MinhasFinanças FullStack
+Este projeto implementa uma estratégia de testes baseada na Pirâmide de Testes, garantindo qualidade tanto na API (.NET) quanto na interface do usuário (React/Vite).
 
-Este projeto implementa uma estratégia de testes baseada na Pirâmide de Testes, garantindo qualidade, confiabilidade e rápida detecção de regressões.
+📐 Estratégia de Qualidade
+A solução cobre o ciclo completo de desenvolvimento:
 
-A solução inclui três níveis de validação:
+Testes Unitários & Integração (.NET): Garantem que as regras de negócio e o banco de dados funcionem.
 
-- Testes Unitários
+Testes End-to-End (Playwright): Garantem que o usuário consiga realizar ações na tela (como criar pessoas).
 
-- Testes de Integração
+📂 Estratégia e Estrutura
+1. Backend (.NET 9 + xUnit)
+MinhasFinancas.UnitTests: Valida regras de negócio sem dependências externas.
 
-- Testes End-to-End
+MinhasFinancas.IntegrationTests: Valida a comunicação entre Controllers, Services e Repositories usando TestServer.
 
-Essa abordagem permite validar desde regras isoladas de negócio até fluxos completos da aplicação.
+2. Frontend E2E (Playwright)
+frontend-tests/tests/e2e: Simula o comportamento real do usuário no navegador (Chrome/Chromium).
 
-📐 Test Pyramid
-
-A estratégia segue o modelo clássico da pirâmide de testes.
-
-                E2E Tests
-           Integration Tests
-              Unit Tests
-
-Princípios aplicados:
-
-- Maior quantidade de testes unitários
-
-- Testes de integração validando contratos entre camadas
-
-- Testes E2E cobrindo fluxos críticos do sistema
-
-Esse modelo reduz tempo de execução, aumenta confiabilidade e facilita manutenção.
-
-📂 Estrutura do Projeto de Testes
-MinhasFinancas
-│
-├── MinhasFinancas.API
-│
-├── MinhasFinancas.UnitTests
-│
-├── MinhasFinancas.IntegrationTests
-│
-└── MinhasFinancas.E2ETests
-Unit Tests
-MinhasFinancas.UnitTests
-
-Responsáveis por validar regras de negócio isoladas.
-
-Características:
-
-- Não dependem de banco de dados
-
-- Não dependem de APIs externas
-
-- Executam rapidamente
-
-Exemplos de cenários testados:
-
-- validação de regras de transação
-
-- validação de cálculos
-
-- validação de comportamento de serviços
-
-Integration Tests
-MinhasFinancas.IntegrationTests
-
-Validam a integração entre componentes da aplicação:
-
-- Controllers
-
-- Services
-
-- Repositories
-
-- Persistência de dados
-
-Esses testes garantem que as camadas da aplicação funcionem corretamente juntas.
-
-Exemplo de cenário:
-
-POST /transactions
-↓
-Controller recebe request
-↓
-Service processa regra
-↓
-Repository persiste dados
-↓
-API retorna resposta HTTP
-End-to-End Tests
-MinhasFinancas.E2ETests
-
-Validam o fluxo completo da aplicação, simulando o comportamento real do usuário.
-
-Objetivo: Garantir que o sistema funcione corretamente do início ao fim.
-
-Exemplo de fluxo validado:
-
-Criar transação
-↓
-Persistir no sistema
-↓
-Consultar transações
-↓
-Validar resposta da API
+Tecnologias: Playwright, TypeScript e Vite.
 
 ▶️ Como Executar os Testes
-Executar todos os testes
+Executar Testes de Backend (API)
+Na raiz da solução, use os comandos do .NET:
 
-Na raiz da solução:
-dotnet test
+Bash
+# Executar todos os testes de C#
+dotnet test MinhasFinancasTests.sln
 
-Executar apenas testes unitários:
+# Executar apenas uma camada específica
 dotnet test MinhasFinancas.UnitTests
-
-Executar apenas testes de integração:
 dotnet test MinhasFinancas.IntegrationTests
+Executar Testes de Frontend (Interface)
+Certifique-se de que o site está rodando primeiro:
 
-Executar apenas testes E2E:
-dotnet test MinhasFinancas.E2ETests
+Bash
+# 1. No terminal do frontend, suba o app:
+npm run dev
 
-🐞 Bugs Encontrados Durante os Testes
-
-Durante a implementação dos testes foram identificados comportamentos que poderiam gerar inconsistência de dados.
-
-Regra de validação de transação
-
-Problema observado: A API permitia a criação de registros sem validações suficientes.
-
-Possíveis impactos:
-
-- Dados inconsistentes
-
-- Quebra de regras de negócio
-
-- Falhas em relatórios financeiros
-
-Solução aplicada:
-
-Foram adicionados testes para garantir que:
-
-- Valores inválidos sejam rejeitados
-
-- As regras de negócio sejam respeitadas
-
-- A API retorne códigos HTTP apropriados
-
-Esses testes garantem que regressões não ocorram no futuro.
-
+# 2. Em outro terminal, rode os testes do Playwright:
+npx playwright test
 ⚙️ Tecnologias Utilizadas
+Backend: .NET 9, xUnit, FluentAssertions.
 
-- .NET 9
+Frontend: React, Vite, Playwright.
 
-- xUnit
+CI/CD: GitHub Actions (configurado para validar cada Push).
 
-- ASP.NET Core
+🐞 Correções Aplicadas
+Durante o desenvolvimento da suite de testes, foram aplicadas melhorias críticas:
 
-- TestServer (para testes de integração)
+Conflitos de Ambiente: Ajuste no playwright.config.ts para evitar conflitos entre o motor do Playwright e bibliotecas de teste de terceiros.
 
-- GitHub Actions (CI opcional)
+Estabilidade (Auto-waiting): Implementação de localizadores robustos (getByRole) para evitar falhas em ambientes de CI lentos.
 
-🚀 Continuous Integration
+Consistência de Dados: Garantia de que a API e o Frontend se comunicam corretamente antes de validar a UI.
 
-O projeto pode ser integrado com GitHub Actions para executar testes automaticamente em cada push ou pull request.
+🚀 Integração Contínua (CI)
+O projeto conta com um workflow no GitHub Actions que:
 
-Exemplo de pipeline: .github/workflows/tests.yml
+Restaura e testa a solução .NET.
 
-Pipeline executa:
+Instala dependências do Node.js.
 
-1- Restore das dependências
+Instala os navegadores do Playwright.
 
-2- Build da aplicação
-
-3- Execução dos testes
-
-Isso garante que nenhuma alteração seja integrada sem validação automática.
-
-📊 Resultado da Execução
-
-Total de testes: 3
-Sucesso: 3
-Falhas: 0
-Tempo de execução: ~11s
-
-💡 Estratégia de Qualidade
-
-A pirâmide de testes aplicada neste projeto traz benefícios importantes:
-
-- Detecção rápida de erros
-
-- Maior confiabilidade da aplicação
-
-- Redução de regressões
-
-- Feedback rápido durante desenvolvimento
-
-Essa abordagem segue boas práticas utilizadas em times de engenharia modernos e ambientes de CI/CD.
+Executa a suite completa de testes em cada Pull Request.
