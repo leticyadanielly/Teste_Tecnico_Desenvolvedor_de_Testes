@@ -8,33 +8,29 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     steps:
-- uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-- name: Setup .NET
-  uses: actions/setup-dotnet@v4
-  with:
-    dotnet-version: 8.0 # Ou a versão que você usa
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
 
-- name: Restore .NET
-  run: dotnet restore MinhasFinancasTests.sln
+      - name: Restore dependencies
+        run: dotnet restore
 
-- name: Build and Test .NET
-  run: dotnet test MinhasFinancasTests.sln --no-restore
+      - name: Build solution
+        run: dotnet build --no-restore --configuration Release
 
-- name: Install Node.js
-  uses: actions/setup-node@v4
-  with:
-    node-version: 20
+      - name: Run Unit Tests
+        run: dotnet test MinhasFinancas.UnitTests/MinhasFinancas.UnitTests.csproj --no-build --verbosity normal
 
-- name: Install Dependencies and Playwright
-  run: |
-    npm install
-    npx playwright install --with-deps
+      - name: Run Integration Tests
+        run: dotnet test MinhasFinancas.IntegrationTests/MinhasFinancas.IntegrationTests.csproj --no-build --verbosity normal
 
-- name: Run Playwright Tests
-  run: npx playwright test
+      - name: Run E2E Tests
+        run: dotnet test MinhasFinancas.E2ETests/MinhasFinancas.E2ETests.csproj --no-build --verbosity normal
       
