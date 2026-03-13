@@ -12,20 +12,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+- uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
+- name: Setup .NET
+  uses: actions/setup-dotnet@v4
+  with:
+    dotnet-version: 8.0 # Ou a versão que você usa
 
-    - name: Restore
-      run: dotnet restore
+- name: Restore .NET
+  run: dotnet restore MinhasFinancasTests.sln
 
-    - name: Build
-      run: dotnet build --no-restore
+- name: Build and Test .NET
+  run: dotnet test MinhasFinancasTests.sln --no-restore
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+- name: Install Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version: 20
+
+- name: Install Dependencies and Playwright
+  run: |
+    npm install
+    npx playwright install --with-deps
+
+- name: Run Playwright Tests
+  run: npx playwright test
       
