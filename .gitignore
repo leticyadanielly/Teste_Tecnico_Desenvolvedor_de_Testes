@@ -1,0 +1,7 @@
+node_modules/
+bin/
+obj/
+.env
+test-results/
+playwright-report/
+.vs/
