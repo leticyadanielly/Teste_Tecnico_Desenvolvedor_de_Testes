@@ -1,3 +1,7 @@
+# MinhasFinanças API
+
+![.NET Tests](https://github.com/leticyadanielly/MinhasFinancas/actions/workflows/tests.yml/badge.svg)
+
 # 🧪 Test Strategy – MinhasFinanças FullStack
 
 Este projeto implementa uma estratégia de testes baseada na **Pirâmide de Testes**, garantindo qualidade, confiabilidade e rápida detecção de regressões tanto no Backend (API) quanto no Frontend (Interface).
