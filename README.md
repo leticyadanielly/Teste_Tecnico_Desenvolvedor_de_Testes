@@ -1,67 +1,71 @@
-🧪 Test Strategy – MinhasFinanças FullStack
-Este projeto implementa uma estratégia de testes baseada na Pirâmide de Testes, garantindo qualidade tanto na API (.NET) quanto na interface do usuário (React/Vite).
+# 🧪 Test Strategy – MinhasFinanças FullStack
 
-📐 Estratégia de Qualidade
-A solução cobre o ciclo completo de desenvolvimento:
+Este projeto implementa uma estratégia de testes baseada na **Pirâmide de Testes**, garantindo qualidade, confiabilidade e rápida detecção de regressões tanto no Backend (API) quanto no Frontend (Interface).
 
-Testes Unitários & Integração (.NET): Garantem que as regras de negócio e o banco de dados funcionem.
+## 📐 Estratégia de Qualidade
 
-Testes End-to-End (Playwright): Garantem que o usuário consiga realizar ações na tela (como criar pessoas).
+A solução segue o modelo de pirâmide, distribuindo os testes em três níveis:
 
-📂 Estratégia e Estrutura
-1. Backend (.NET 9 + xUnit)
-MinhasFinancas.UnitTests: Valida regras de negócio sem dependências externas.
+1.  **Testes Unitários (.NET):** Validação de regras de negócio isoladas.
+2.  **Testes de Integração (.NET):** Validação do fluxo entre Controllers, Services e Repositórios.
+3.  **Testes End-to-End (Playwright):** Validação do fluxo completo do usuário no navegador.
 
-MinhasFinancas.IntegrationTests: Valida a comunicação entre Controllers, Services e Repositories usando TestServer.
+---
 
-2. Frontend E2E (Playwright)
-frontend-tests/tests/e2e: Simula o comportamento real do usuário no navegador (Chrome/Chromium).
+## 📂 Estrutura do Projeto
 
-Tecnologias: Playwright, TypeScript e Vite.
+```text
+├── MinhasFinancas.API              # Aplicação Principal
+├── MinhasFinancas.UnitTests         # Testes Unitários (.NET 9)
+├── MinhasFinancas.IntegrationTests  # Testes de Integração (.NET 9)
+├── frontend-tests/                  # Suite de Testes E2E
+│   └── tests/e2e/criar-pessoa.spec.ts
+└── playwright.config.ts             # Configuração do Playwright
 
 ▶️ Como Executar os Testes
-Executar Testes de Backend (API)
-Na raiz da solução, use os comandos do .NET:
+1. Testes de Backend (.NET)
+Na raiz da solução, execute o comando padrão do dotnet:
 
-Bash
-# Executar todos os testes de C#
+# Executa todos os testes (Unitários e Integração)
 dotnet test MinhasFinancasTests.sln
 
-# Executar apenas uma camada específica
-dotnet test MinhasFinancas.UnitTests
-dotnet test MinhasFinancas.IntegrationTests
-Executar Testes de Frontend (Interface)
-Certifique-se de que o site está rodando primeiro:
+2. Testes de Frontend (Playwright)
+Certifique-se de que as dependências estão instaladas e o servidor local está ativo:
 
-Bash
-# 1. No terminal do frontend, suba o app:
-npm run dev
+# Instalar dependências
+npm install
 
-# 2. Em outro terminal, rode os testes do Playwright:
+# Instalar navegadores do Playwright
+npx playwright install chromium
+
+# Rodar os testes (com o servidor dev ativo)
 npx playwright test
+
+🐞 Bugs Identificados e Melhorias
+Durante a implementação da suite de testes, foram aplicadas melhorias para garantir a consistência dos dados:
+
+Validação de Transações: Implementação de testes para garantir que a API rejeite valores inválidos.
+
+Resiliência de UI: Uso de localizadores robustos (getByRole) e esperas automáticas no Playwright para evitar flakiness (testes que falham intermitentemente).
+
+Isolamento de Ambiente: Configuração de arquivos de teste para evitar conflitos entre bibliotecas de teste (Vitest vs Playwright).
+
 ⚙️ Tecnologias Utilizadas
-Backend: .NET 9, xUnit, FluentAssertions.
+Linguagens: C# (.NET 9), TypeScript.
 
-Frontend: React, Vite, Playwright.
+Frameworks de Teste: xUnit, Playwright.
 
-CI/CD: GitHub Actions (configurado para validar cada Push).
+Ferramentas: Vite (Frontend), GitHub Actions (CI/CD).
 
-🐞 Correções Aplicadas
-Durante o desenvolvimento da suite de testes, foram aplicadas melhorias críticas:
+🚀 Continuous Integration (CI)
+O projeto utiliza GitHub Actions para validar cada alteração automaticamente. O workflow CI - Full Stack Tests realiza:
 
-Conflitos de Ambiente: Ajuste no playwright.config.ts para evitar conflitos entre o motor do Playwright e bibliotecas de teste de terceiros.
+Restore e Build da solução .NET.
 
-Estabilidade (Auto-waiting): Implementação de localizadores robustos (getByRole) para evitar falhas em ambientes de CI lentos.
+Execução dos testes Unitários e de Integração.
 
-Consistência de Dados: Garantia de que a API e o Frontend se comunicam corretamente antes de validar a UI.
+Instalação do ambiente Node.js e navegadores.
 
-🚀 Integração Contínua (CI)
-O projeto conta com um workflow no GitHub Actions que:
+Execução dos testes E2E do Playwright.
 
-Restaura e testa a solução .NET.
-
-Instala dependências do Node.js.
-
-Instala os navegadores do Playwright.
-
-Executa a suite completa de testes em cada Pull Request.
+Isso garante que nenhuma alteração quebre os fluxos críticos da aplicação.
